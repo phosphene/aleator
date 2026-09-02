@@ -1,5 +1,15 @@
 # Stochastic Test-Driven Development (STDD) Specification
 
+> **The Definitory Warrant.** Open source is the form of definitory warrant
+> that does not require belief. A claim made in public gets its force not
+> from the claimant's inner state but from the apparatus standing behind it
+> — how specified it is, how specifiable it remains, and whether it is
+> testable in some bounded sense. Those are properties of the claim and the
+> apparatus, not of us. You cannot audit sincerity; you can audit
+> specification. This package ships its full specification and its
+> self-tests; anyone can verify the apparatus against itself without
+> trusting us at all.
+
 ## Problem
 
 Standard TDD relies on deterministic assertions: `expect_equal(f(x), y)`.
