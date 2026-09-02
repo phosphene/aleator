@@ -1,0 +1,33 @@
+Type: Package
+Package: stdd
+Title: Stochastic Test-Driven Development for R
+Version: 0.1.0
+Authors@R: c(
+    person("Ed", "Phillips", role = c("aut", "cre"), email = "ed@phosphene.dev"),
+    person("Jan", "Ritch-Frel", role = "aut"),
+    person("Flow", "Feel", role = "aut", comment = "AI platform engineer")
+  )
+Description: Stochastic Test-Driven Development (STDD) utilities for testing
+    probabilistic and Bayesian code. Standard deterministic assertions fail
+    on MCMC, bootstraps, and other stochastic outputs. This package decouples
+    deterministic math from stochastic simulation: controlled seed
+    environments (with cross-platform RNG specification), parameter recovery
+    tests (generate from known thetas, verify estimates fall in credible
+    intervals), and convergence diagnostics (R-hat, effective sample size).
+    Pure functional interfaces, no global state, one dependency (withr).
+License: MIT + file LICENSE
+URL: https://github.com/FlowFeel/r-stdd
+BugReports: https://github.com/FlowFeel/r-stdd/issues
+Depends:
+    R (>= 4.4.0)
+Imports:
+    withr
+Suggests:
+    testthat (>= 3.0.0),
+    covr,
+    lintr,
+    styler
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
