@@ -22,11 +22,11 @@ NULL
 #' @return The result of evaluating `code`.
 #' @export
 #' @examples
-#' stdd_seed_env(42, rnorm(5))
-stdd_seed_env <- function(seed,
-                          code,
-                          .rng_kind = "Mersenne-Twister",
-                          .rng_normal_kind = "Inversion") {
+#' aleator_seed_env(42, rnorm(5))
+aleator_seed_env <- function(seed,
+                             code,
+                             .rng_kind = "Mersenne-Twister",
+                             .rng_normal_kind = "Inversion") {
   stopifnot(is.numeric(seed), length(seed) == 1L)
   withr::with_seed(
     seed,
@@ -61,7 +61,7 @@ stdd_seed_env <- function(seed,
 #' @export
 #' @examples
 #' \dontrun{
-#' result <- stdd_param_recovery(
+#' result <- aleator_param_recovery(
 #'   true_params = c(intercept = 2.0, slope = 0.5),
 #'   generate_fn = function(params) {
 #'     x <- rnorm(200)
@@ -80,18 +80,18 @@ stdd_seed_env <- function(seed,
 #'   }
 #' )
 #' }
-stdd_param_recovery <- function(true_params,
-                                generate_fn,
-                                fit_fn,
-                                extract_fn,
-                                ci_level = 0.95,
-                                seed = 42L) {
+aleator_param_recovery <- function(true_params,
+                                   generate_fn,
+                                   fit_fn,
+                                   extract_fn,
+                                   ci_level = 0.95,
+                                   seed = 42L) {
   stopifnot(is.numeric(true_params), !is.null(names(true_params)))
   stopifnot(is.function(generate_fn), is.function(fit_fn), is.function(extract_fn))
   stopifnot(ci_level > 0, ci_level < 1)
 
   # Generate synthetic data under controlled seed
-  synth_data <- stdd_seed_env(seed, generate_fn(true_params))
+  synth_data <- aleator_seed_env(seed, generate_fn(true_params))
 
   # Fit model
 
@@ -143,16 +143,16 @@ stdd_param_recovery <- function(true_params,
 #'   }
 #' @export
 #' @examples
-#' stdd_convergence_check(
+#' aleator_convergence_check(
 #'   rhat_values = c(1.01, 1.00, 1.02),
 #'   ess_values = c(1200, 800, 950),
 #'   param_names = c("alpha", "beta", "sigma")
 #' )
-stdd_convergence_check <- function(rhat_values,
-                                   ess_values,
-                                   rhat_threshold = 1.05,
-                                   ess_threshold = 400,
-                                   param_names = NULL) {
+aleator_convergence_check <- function(rhat_values,
+                                      ess_values,
+                                      rhat_threshold = 1.05,
+                                      ess_threshold = 400,
+                                      param_names = NULL) {
   stopifnot(is.numeric(rhat_values), is.numeric(ess_values))
   stopifnot(length(rhat_values) == length(ess_values))
 

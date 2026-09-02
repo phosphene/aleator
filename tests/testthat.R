@@ -1,4 +1,4 @@
 library(testthat)
-library(stdd)
+library(aleator)
 
-test_check("stdd")
+test_check("aleator")

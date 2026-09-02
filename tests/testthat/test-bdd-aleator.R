@@ -6,14 +6,14 @@ describe("Seed Isolation", {
 
   describe("Reproducibility guarantee", {
     it("produces identical results from the same seed", {
-      r1 <- stdd_seed_env(42, rnorm(100))
-      r2 <- stdd_seed_env(42, rnorm(100))
+      r1 <- aleator_seed_env(42, rnorm(100))
+      r2 <- aleator_seed_env(42, rnorm(100))
       expect_identical(r1, r2)
     })
 
     it("produces different results from different seeds", {
-      r1 <- stdd_seed_env(42, rnorm(100))
-      r2 <- stdd_seed_env(99, rnorm(100))
+      r1 <- aleator_seed_env(42, rnorm(100))
+      r2 <- aleator_seed_env(99, rnorm(100))
       expect_false(identical(r1, r2))
     })
   })
@@ -23,7 +23,7 @@ describe("Seed Isolation", {
       set.seed(7)
       before <- runif(1)
 
-      stdd_seed_env(42, rnorm(1000))  # should not affect outer state
+      aleator_seed_env(42, rnorm(1000))  # should not affect outer state
 
       set.seed(7)
       after <- runif(1)
@@ -32,17 +32,17 @@ describe("Seed Isolation", {
     })
 
     it("allows nested seed environments without interference", {
-      outer <- stdd_seed_env(10, {
+      outer <- aleator_seed_env(10, {
         a <- rnorm(5)
-        inner <- stdd_seed_env(20, rnorm(5))
+        inner <- aleator_seed_env(20, rnorm(5))
         b <- rnorm(5)
         list(a = a, inner = inner, b = b)
       })
 
       # Reproduce — same outer seed should give same a and b
-      outer2 <- stdd_seed_env(10, {
+      outer2 <- aleator_seed_env(10, {
         a <- rnorm(5)
-        inner <- stdd_seed_env(20, rnorm(5))
+        inner <- aleator_seed_env(20, rnorm(5))
         b <- rnorm(5)
         list(a = a, inner = inner, b = b)
       })
@@ -55,7 +55,7 @@ describe("Seed Isolation", {
 
   describe("Cross-platform reproducibility", {
     it("specifies RNG kind explicitly for platform independence", {
-      result <- stdd_seed_env(42, rnorm(10),
+      result <- aleator_seed_env(42, rnorm(10),
         .rng_kind = "Mersenne-Twister",
         .rng_normal_kind = "Inversion")
 
@@ -70,7 +70,7 @@ describe("Parameter Recovery Framework", {
 
   describe("Linear model recovery", {
     it("recovers intercept and slope from synthetic data", {
-      result <- stdd_param_recovery(
+      result <- aleator_param_recovery(
         true_params = c(intercept = 5.0, slope = -2.0),
         generate_fn = function(params) {
           x <- rnorm(300)
@@ -97,7 +97,7 @@ describe("Parameter Recovery Framework", {
 
   describe("Return structure", {
     it("returns a list with recovered, summary, and all_recovered components", {
-      result <- stdd_param_recovery(
+      result <- aleator_param_recovery(
         true_params = c(mu = 0),
         generate_fn = function(p) data.frame(x = rnorm(100, mean = p["mu"])),
         fit_fn = function(d) list(mean = mean(d$x), se = sd(d$x) / sqrt(nrow(d))),
@@ -124,7 +124,7 @@ describe("Parameter Recovery Framework", {
   describe("Input validation", {
     it("rejects unnamed parameter vectors", {
       expect_error(
-        stdd_param_recovery(
+        aleator_param_recovery(
           true_params = c(1, 2),
           generate_fn = identity, fit_fn = identity, extract_fn = identity
         )
@@ -133,7 +133,7 @@ describe("Parameter Recovery Framework", {
 
     it("rejects extract functions missing required columns", {
       expect_error(
-        stdd_param_recovery(
+        aleator_param_recovery(
           true_params = c(a = 1),
           generate_fn = function(p) data.frame(x = 1:10),
           fit_fn = function(d) lm(x ~ 1, data = d),
@@ -150,7 +150,7 @@ describe("Convergence Diagnostics", {
 
   describe("Passing diagnostics", {
     it("reports all_converged = TRUE when all parameters pass", {
-      check <- stdd_convergence_check(
+      check <- aleator_convergence_check(
         rhat_values = c(1.00, 1.01, 1.02),
         ess_values = c(1500, 1200, 900),
         param_names = c("alpha", "beta", "sigma")
@@ -162,7 +162,7 @@ describe("Convergence Diagnostics", {
 
   describe("Failing diagnostics", {
     it("flags parameters with R-hat above threshold", {
-      check <- stdd_convergence_check(
+      check <- aleator_convergence_check(
         rhat_values = c(1.01, 1.15),
         ess_values = c(1000, 1000),
         param_names = c("good", "bad")
@@ -173,7 +173,7 @@ describe("Convergence Diagnostics", {
     })
 
     it("flags parameters with ESS below threshold", {
-      check <- stdd_convergence_check(
+      check <- aleator_convergence_check(
         rhat_values = c(1.01, 1.01),
         ess_values = c(800, 50),
         param_names = c("good", "bad")
@@ -186,7 +186,7 @@ describe("Convergence Diagnostics", {
 
   describe("Report structure", {
     it("returns a data frame with per-parameter diagnostics", {
-      check <- stdd_convergence_check(
+      check <- aleator_convergence_check(
         rhat_values = c(1.01, 1.02),
         ess_values = c(800, 600),
         param_names = c("a", "b")

@@ -1,4 +1,4 @@
-# Stochastic Test-Driven Development (STDD) Specification
+# aleator — Stochastic Test-Driven Development (STDD) Specification
 
 > **The Definitory Warrant.** Open source is the form of definitory warrant
 > that does not require belief. A claim made in public gets its force not
@@ -37,7 +37,7 @@ test_that("sampler produces expected structure", {
 })
 
 # Or use the Foundry wrapper
-stdd_seed_env(1234, {
+aleator_seed_env(1234, {
   result <- my_sampler(data, n_iter = 100)
 })
 ```
@@ -46,7 +46,7 @@ stdd_seed_env(1234, {
 
 Specify RNG kind explicitly:
 ```r
-stdd_seed_env(42, code, .rng_kind = "Mersenne-Twister", .rng_normal_kind = "Inversion")
+aleator_seed_env(42, code, .rng_kind = "Mersenne-Twister", .rng_normal_kind = "Inversion")
 ```
 
 The `"Inversion"` normal method is deterministic across platforms. The default
@@ -60,7 +60,7 @@ Generate data from known θ*, fit model, check θ̂ falls in credible interval:
 
 ```r
 test_that("model recovers known parameters", {
-  result <- stdd_param_recovery(
+  result <- aleator_param_recovery(
     true_params = c(intercept = 2.0, slope = 0.5),
     generate_fn = function(params) {
       x <- rnorm(500)
@@ -100,7 +100,7 @@ test_that("conjugate sampler matches analytical posterior", {
 
 ```r
 test_that("MCMC chains converge", {
-  check <- stdd_convergence_check(
+  check <- aleator_convergence_check(
     rhat_values = extract_rhat(fit),
     ess_values = extract_ess(fit),
     rhat_threshold = 1.05,
@@ -147,7 +147,7 @@ test_that("full model recovers parameters on simulated data", {
   skip_on_cran()
   skip_if_not(Sys.getenv("RUN_INTEGRATION") == "true")
 
-  result <- stdd_param_recovery(
+  result <- aleator_param_recovery(
     true_params = c(intercept = 2.0, slope = 0.5, sigma = 0.3),
     generate_fn = generate_synthetic_brms_data,
     fit_fn = fit_full_brms_model,
