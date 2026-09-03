@@ -2,11 +2,11 @@
 
 [![R-CMD-check](https://github.com/phosphene/aleator/actions/workflows/ci.yml/badge.svg)](https://github.com/phosphene/aleator/actions/workflows/ci.yml)
 
-**Test probabilistic and Bayesian code the way you test deterministic code.**
+**Test probabilistic and Bayesian assertions.**
 
 Standard `expect_equal(f(x), y)` assertions fail on MCMC, bootstraps, and
-any other stochastic output — the result isn't a single number, it's a
-distribution. `aleator` gives you the tools to test stochastic systems
+any other stochastic output because the result a
+distribution. `aleator` tests stochastic systems
 rigorously:
 
 - **Controlled seed environments** — `aleator_seed_env()` wraps `withr::with_seed()`
@@ -102,19 +102,8 @@ testthat's native `describe()`/`it()` — no extra dependencies.
 `.github/workflows/ci.yml` runs in `rocker/r-ver:4.4.0`:
 lint (lintr, styler) → test (testthat) → coverage (covr ≥ 80%).
 
-## The Definitory Warrant
-
-This package is open source because definitory power transfers while
-sincerity does not. A claim made in public gets its force not from the
-claimant's inner state but from the apparatus standing behind it — how
-specified it is, how specifiable it remains, and whether it is testable
-in some bounded sense. Those are properties of the claim and the
-apparatus, not of us. You cannot audit sincerity; you can audit
-specification.
-
-This package ships its full specification and its self-tests. Anyone can
-verify the apparatus against itself without trusting us at all. Open
-source is the form of definitory warrant that does not require belief.
+# self test
+This package ships its full specification and its self-tests and is fully reproducible
 
 ## Docs
 
