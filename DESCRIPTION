@@ -16,8 +16,8 @@ Description: Stochastic Test-Driven Development (STDD) utilities for testing
     intervals), and convergence diagnostics (R-hat, effective sample size).
     Pure functional interfaces, no global state, one dependency (withr).
 License: MIT + file LICENSE
-URL: https://github.com/FlowFeel/aleator
-BugReports: https://github.com/FlowFeel/aleator/issues
+URL: https://github.com/phosphene/aleator
+BugReports: https://github.com/phosphene/aleator/issues
 Depends:
     R (>= 4.4.0)
 Imports:
